@@ -44,7 +44,21 @@ const app = express();
 app.listen(PORT, ()=> console.log(`Server is listning on port ${PORT}`));
                 "#).unwrap();
 
-                std::process::Command::new("npm").arg("install").output().expect("failed to bring dependencies");
+                let output = std::process::Command::new("npm")
+                .arg("install")
+                .arg("express")
+                .arg("@types/express")
+                .output()
+                .expect("failed to execute npm install");
+        
+            if output.status.success() {
+                println!("npm install succeeded");
+                println!("{}", String::from_utf8_lossy(&output.stdout));
+            } else {
+                eprintln!("npm install failed:");
+                eprintln!("{}", String::from_utf8_lossy(&output.stderr));
+                std::process::exit(1);
+            }
 
           }).join().unwrap();
         };

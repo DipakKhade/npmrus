@@ -29,7 +29,11 @@ pub fn create_npm_project(project_dir_name: &String) {
                 std::fs::write("tsconfig.json", updated).expect("Failed to write updated tsconfig.json");
 
                 let package_json = std::fs::read_to_string("package.json").expect("Failed to read package json");
-                let updated_package_json = package_json.replace(r#" "test": "echo \"Error: no test specified\" && exit 1""#, r#" "dev":"tsc -b && node dist/index.js" "#);
+                let updated_package_json = package_json
+                .replace(r#" "test": "echo \"Error: no test specified\" && exit 1""#, r#" 
+                "dev":"tsc -b && node dist/index.js", 
+                "build":"tsc -b" 
+                "#);
                 std::fs::write("package.json", updated_package_json).expect("failed to update package.json");
 
                 let _ = std::fs::create_dir("src");

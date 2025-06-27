@@ -28,15 +28,23 @@ pub fn create_npm_project(project_dir_name: &String) {
 
                 std::fs::write("tsconfig.json", updated).expect("Failed to write updated tsconfig.json");
 
+                let package_json = std::fs::read_to_string("package.json").expect("Failed to read package json");
+                let updated_package_json = package_json.replace(r#" "test": "echo \"Error: no test specified\" && exit 1""#, r#" "dev":"tsc -b && node dist/index.js" "#);
+                std::fs::write("package.json", updated_package_json).expect("failed to update package.json");
+
                 let _ = std::fs::create_dir("src");
                 let _ = std::env::set_current_dir("src");
                 let _ = std::fs::write("index.ts", r#"
-function main() {
-    console.log('Hello world')
-};
+import express from 'express';
 
-main();
+const PORT = process.env.PORT || 8080;
+
+const app = express();
+
+app.listen(PORT, ()=> console.log(`Server is listning on port ${PORT}`));
                 "#).unwrap();
+
+                std::process::Command::new("npm").arg("install").output().expect("failed to bring dependencies");
 
           }).join().unwrap();
         };

@@ -16,7 +16,7 @@ A Rust CLI tool to scaffold and manage a basic **Express.js** server project.
 Clone the repository and build the project:
 
 ```bash
-git clone https://github.com/your-username/npmrus.git
+git clone https://github.com/DipakKhade/npmrus
 cd npmrus
 cargo build --release
 ```

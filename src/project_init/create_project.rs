@@ -10,7 +10,7 @@ pub fn create_npm_project(project_dir_name: &String) {
 
         let create_npm_project = || {
             let _handler = std::thread::spawn(move || {
-                
+
                 println!("initializating project...");
 
                 let _ = std::process::Command::new("npm").arg("init").arg("-y").output().expect("failed to create a project");
@@ -63,6 +63,7 @@ app.listen(PORT, ()=> console.log(`Server is listning on port ${PORT}`));
             if output.status.success() {
                 println!("npm install succeeded");
                 println!("{}", String::from_utf8_lossy(&output.stdout));
+                println!("project created at: {:?}", std::env::current_dir().unwrap())
             } else {
                 eprintln!("npm install failed:");
                 eprintln!("{}", String::from_utf8_lossy(&output.stderr));

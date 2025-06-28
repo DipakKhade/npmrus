@@ -1,10 +1,28 @@
 
 pub fn route_init(route_name:&String) {
-    // let _ = std::env::set_current_dir("asd");
+    if !std::path::Path::new("src/Routes").is_dir() {
+        let _ = std::fs::create_dir("src/Routes");
+    }
+
+    let file_name = format!("src/Routes/{}.ts",route_name);
+    if std::path::Path::new(&file_name).exists() {
+        println!("Route already exists");
+        return;
+    } else {
+        let _ = std::fs::File::create_new(&file_name).unwrap();
+        let route_file = std::fs::read_to_string(&file_name).unwrap();
+        let updated_route_file = route_file.replace("", &format!(r#"
+import {{ Router }} from 'express';
+
+export const {}Router = Router();
+        "#, route_name));
+        let _ = std::fs::write(&file_name, updated_route_file);
+    }
+
     let index_ts_path = "src/index.ts".to_string();
     let index_ts_file = std::fs::read_to_string(&index_ts_path).expect("index.ts not found");
 
-    let import_line = format!("import {{ {}Router }} from './routes/{}';", route_name, route_name);
+    let import_line = format!("import {{ {}Router }} from './Routes/{}';", route_name, route_name);
     let use_line = format!("app.use(\"/{}\", {}Router);", route_name, route_name);
 
     let mut updated_content = String::new();
@@ -31,5 +49,4 @@ pub fn route_init(route_name:&String) {
         );
 
         std::fs::write(index_ts_path, final_content).expect("Unable to write to index.ts");
-
 }

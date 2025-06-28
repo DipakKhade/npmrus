@@ -25,7 +25,7 @@ fn main() {
 
     let route_name = args.get_one::<String>("createroute");
     match route_name {
-        Some(x) => route_init::create_route::route_init(),
+        Some(x) => route_init::create_route::route_init(x),
         None => {}
     }
 

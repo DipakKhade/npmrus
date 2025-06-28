@@ -10,6 +10,9 @@ pub fn create_npm_project(project_dir_name: &String) {
 
         let create_npm_project = || {
             let _handler = std::thread::spawn(move || {
+                
+                println!("initializating project...");
+
                 let _ = std::process::Command::new("npm").arg("init").arg("-y").output().expect("failed to create a project");
 
                 let _ = std::process::Command::new("npx").arg("tsc").arg("--init").output().expect("failed to create a project");
@@ -47,6 +50,8 @@ const app = express();
 
 app.listen(PORT, ()=> console.log(`Server is listning on port ${PORT}`));
                 "#).unwrap();
+                
+                println!("installing dependencies ....");
 
                 let output = std::process::Command::new("npm")
                 .arg("install")

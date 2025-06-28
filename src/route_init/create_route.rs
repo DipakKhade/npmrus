@@ -1,7 +1,8 @@
 
 pub fn route_init(route_name:&String) {
-    let index_ts_path = "index.ts".to_string();
-    let index_ts_file = std::fs::read_to_string(index_ts_path).expect("index.ts not found");
+    // let _ = std::env::set_current_dir("asd");
+    let index_ts_path = "src/index.ts".to_string();
+    let index_ts_file = std::fs::read_to_string(&index_ts_path).expect("index.ts not found");
 
     let import_line = format!("import {{ {}Router }} from './routes/{}';", route_name, route_name);
     let use_line = format!("app.use(\"/{}\", {}Router);", route_name, route_name);
@@ -22,9 +23,9 @@ pub fn route_init(route_name:&String) {
 
     let final_content = updated_content
         .replace(
-            "app.listen(PORT, ()=> console.log(`Server is listning on port ${PORT}`));",
+            "app.listen(PORT, ()=> console.log(`Server is up...`));",
             &format!(
-                "{}\n\napp.listen(PORT, ()=> console.log(`Server is listning on port ${PORT}`));",
+                "{}\n\napp.listen(PORT, ()=> console.log(`Server is up...`));",
                 use_line
             )
         );
